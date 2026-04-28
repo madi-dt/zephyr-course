@@ -1,9 +1,8 @@
 #include <zephyr/device.h>
 #include <zephyr/drivers/gpio.h>
+#include <zephyr/kernel.h>
 
-
-static const struct device *gpio_ct_dev =
-  DEVICE_DT_GET(DT_NODELABEL(gpio0));
+static const struct device *gpio_ct_dev = DEVICE_DT_GET(DT_NODELABEL(gpio0));
 
 int main(void)
 {
@@ -23,12 +22,12 @@ int main(void)
     if (ret != 0) {
       return -1;
     }
-    k_msleep(1000);
+    k_msleep(CONFIG_BLINK_SLEEP_TIME_MS);
 
     ret = gpio_pin_set_raw(gpio_ct_dev, 2, 0);
     if (ret != 0) {
       return -1;
     }
-    k_msleep(1000);
+    k_msleep(CONFIG_BLINK_SLEEP_TIME_MS);
   }
 }
