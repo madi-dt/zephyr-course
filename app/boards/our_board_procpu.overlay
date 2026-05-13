@@ -1,8 +1,10 @@
 / {
     led{
         compatible = "gpio-leds";
-        app_led: led0{
+
+        app_led: led_0{
             gpios = <&gpio0 2 GPIO_ACTIVE_LOW>;
+            label = "led";
         };
     };
 };
