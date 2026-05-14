@@ -1,12 +1,21 @@
 #include <zephyr/drivers/gpio.h>
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
+#include <zephyr/init.h>
 
 #define LED_NODE DT_NODELABEL(app_led)
 
 LOG_MODULE_REGISTER(main, LOG_LEVEL_INF);
 
 static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED_NODE, gpios);
+
+static int board_init_message(void)
+{
+    printk("Board Initialized\n");
+    return 0;
+}
+
+SYS_INIT(board_init_message, APPLICATION, 0);
 
 int main(void)
 {

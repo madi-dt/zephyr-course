@@ -5,3 +5,4 @@ build
 .west
 deps
 .vscode/
+app/ps_cmd.ps1
