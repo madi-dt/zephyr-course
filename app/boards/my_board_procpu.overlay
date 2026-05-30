@@ -3,7 +3,7 @@
         compatible = "led_driver";
         calibration = <50>;
         sleep-ms = <200>;
-        gpios = <&gpio0 2 GPIO_ACTIVE_LOW>;
+        gpios = <&gpio0 2 0>;
         status = "okay";
     };
 };
