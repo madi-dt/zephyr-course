@@ -10,6 +10,7 @@ extern "C" {
 
 uint32_t led_drv_get_sleep_ms(const struct device *dev);
 
+int led_drv_set_blink_delay(const struct device *dev, uint32_t delay_ms);
 
 #ifdef __cplusplus
 }

@@ -19,7 +19,6 @@ static int cmd_sensor_fetch(const struct shell *sh, size_t argc, char **argv)
         return ret;
     }
 
-    shell_print(sh, "Sample fetched successfully");
     return 0;
 }
 
@@ -38,7 +37,6 @@ static int cmd_sensor_read(const struct shell *sh, size_t argc, char **argv)
         return ret;
     }
 
-    shell_print(sh, "Sensor value: val1=%d", val.val1);
     return 0;
 }
 
@@ -52,8 +50,39 @@ static int cmd_sensor_info(const struct shell *sh, size_t argc, char **argv)
     return 0;
 }
 
+static int cmd_sensor_set(const struct shell *sh, size_t argc, char **argv)
+{
+    const struct device *dev = DEVICE_DT_GET(LED_DEV_NODE);
+    if (!device_is_ready(dev)) {
+        shell_error(sh, "Device not ready");
+        return -ENODEV;
+    }
+
+    if (argc < 2) {
+        shell_error(sh, "Missing argument. Usage: sensor set <0-10000>");
+        return -EINVAL;
+    }
+
+    int err;
+    unsigned long raw = shell_strtoul(argv[1], 0, &err);
+    if (err < 0) {
+        shell_error(sh, "Invalid argument: %s", argv[1]);
+        return -EINVAL;
+    }
+
+    if (raw > 10000) {
+        shell_error(sh, "Value out of range (0-10000): %lu", raw);
+        return -EINVAL;
+    }
+
+    led_drv_set_blink_delay(dev, (uint32_t)raw);
+    shell_print(sh, "Blink delay set to %lu ms", raw);
+    return 0;
+}
+
 SHELL_STATIC_SUBCMD_SET_CREATE(sub_sensor,
     SHELL_CMD(fetch, NULL, "Call sensor_sample_fetch()", cmd_sensor_fetch),
+    SHELL_CMD(set,   NULL, "Set blink delay. Usage: sensor set <0-10000>", cmd_sensor_set),
     SHELL_CMD(read,  NULL, "Call sensor_channel_get() and print result", cmd_sensor_read),
     SHELL_CMD(info,  NULL, "Print device name and ready state", cmd_sensor_info),
     SHELL_SUBCMD_SET_END
