@@ -6,6 +6,10 @@ properties:
     type: int
     required: true
     description: Calibration value for the sensor
+  sleep-ms:
+    type: int
+    required: true
+    description: Duration in milliseconds for k_msleep calls in the driver
   gpios:
     type: phandle-array
     required: true
