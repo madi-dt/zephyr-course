@@ -1,0 +1,6 @@
+config LED_DRIVER
+    bool "Lesson 6 Custom Driver Assignment"
+    default y                                          
+    depends on DT_HAS_LED_DRIVER_ENABLED         
+    help
+        enable/disable the custom driver for lesson 6 assignment

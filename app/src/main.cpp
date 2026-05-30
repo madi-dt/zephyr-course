@@ -1,44 +1,15 @@
-#include <zephyr/drivers/gpio.h>
 #include <zephyr/kernel.h>
-#include <zephyr/logging/log.h>
-#include <zephyr/init.h>
+#include <zephyr/drivers/sensor.h>
 
-#define LED_NODE DT_NODELABEL(app_led)
+int main(void) {
+    const struct device *led_dev = DEVICE_DT_GET(DT_INST(0, led_driver));
+    struct sensor_value value;
 
-LOG_MODULE_REGISTER(main, LOG_LEVEL_INF);
-
-static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED_NODE, gpios);
-
-static int board_init_message(void)
-{
-    printk("Board Initialized\n");
+    while (true) {
+        (void)sensor_channel_get(led_dev, SENSOR_CHAN_VOLTAGE, &value);
+        k_msleep(1000);
+        (void)sensor_sample_fetch(led_dev);
+        k_msleep(1000);
+    }
     return 0;
-}
-
-SYS_INIT(board_init_message, APPLICATION, 0);
-
-int main(void)
-{
-  bool led_state = true;
-  if (!gpio_is_ready_dt(&led)) {
-    return 0;
-  }
-
-  
-  if ( gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE) < 0) {
-    return 0;
-  }
-
-  while (true) {
-   if (gpio_pin_toggle_dt(&led) < 0) {
-    return 0;
-   }
-
-   led_state = !led_state;
-
-   LOG_INF("LED state: %s", led_state ? "ON" : "OFF");
-   k_msleep(CONFIG_APP_HEARBEAT_PERIOD_MS);
-  
-  }
-  return 0;
 }

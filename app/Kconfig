@@ -4,3 +4,4 @@ config APP_HEARBEAT_PERIOD_MS
   default 500
 
 source "Kconfig.zephyr"
+rsource "drivers/led_driver/Kconfig"

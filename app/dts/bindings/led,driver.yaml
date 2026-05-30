@@ -1,0 +1,12 @@
+description: custom driver for lesson 6 assignment
+compatible: "led_driver"      # this value should match the name of the file (without the .yaml extension) and the compatible string used in the device tree
+include: base.yaml
+properties:
+  calibration:
+    type: int
+    required: true
+    description: Calibration value for the sensor
+  gpios:
+    type: phandle-array
+    required: true
+    description: GPIO spec for the LED to control

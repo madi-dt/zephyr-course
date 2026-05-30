@@ -1,10 +1,8 @@
 / {
-    led{
-        compatible = "gpio-leds";
-
-        app_led: led_0{
-            gpios = <&gpio0 2 GPIO_ACTIVE_LOW>;
-            label = "led";
-        };
+    led_driver0: led_driver{
+        compatible = "led_driver";
+        calibration = <50>;
+        gpios = <&gpio0 2 GPIO_ACTIVE_LOW>;
+        status = "okay";
     };
 };
